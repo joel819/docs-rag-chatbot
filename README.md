@@ -2,6 +2,16 @@
 
 Upload PDFs and ask questions about them. Every answer cites the source document and page number. It runs locally for free.
 
+## Screenshots
+
+Asking questions about the three sample PDFs. Each answer cites the document and page, and the `[1]` badges link to the PDF. A question the documents don't cover gets an honest "I couldn't find that" instead of a guess.
+
+![The chat UI: three questions answered with page citations, and one the documents cannot answer](docs/screenshots/chat.png)
+
+Zoomed in on one answer, with the source passage the citation points to:
+
+![An answer with its clickable citation and source snippet](docs/screenshots/answer.png)
+
 ## What it does
 
 - **Upload PDFs** from the web page or through the API. Text is extracted page by page and split into overlapping chunks, and a chunk never spans two pages. The chunks are embedded locally with `all-MiniLM-L6-v2` and stored in ChromaDB.
