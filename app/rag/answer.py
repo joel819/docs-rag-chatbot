@@ -9,9 +9,12 @@ from app.rag.vector_store import Hit
 from app.schemas import AskOut, Citation
 
 _MARKER = re.compile(r"\[(\d+)\]")
+# Some models write citations as 【1】 or ［1］; normalise them to [1].
+_ALT_MARKER = re.compile(r"[【［\[]\s*(\d+)\s*[】］\]]")
 
 
 def _citations(answer: str, hits: list[Hit]) -> tuple[str, list[Citation]]:
+    answer = _ALT_MARKER.sub(lambda m: f"[{m.group(1)}]", answer)
     used: list[int] = []
     for m in _MARKER.finditer(answer):
         n = int(m.group(1))
