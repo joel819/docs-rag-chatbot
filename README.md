@@ -5,7 +5,7 @@ Upload PDFs and ask questions about them. Every answer cites the source document
 ## What it does
 
 - **Upload PDFs** from the web page or through the API. Text is extracted page by page and split into overlapping chunks, and a chunk never spans two pages. The chunks are embedded locally with `all-MiniLM-L6-v2` and stored in ChromaDB.
-- **Ask questions.** The most relevant chunks are sent to Llama 3.3 70B on Groq's free tier. The model has to answer from those chunks only and cite them as `[1]`, `[2]`, and so on.
+- **Ask questions.** The most relevant chunks are sent to an open model (gpt-oss-120b) on Groq's free tier. The model has to answer from those chunks only and cite them as `[1]`, `[2]`, and so on.
 - **Citations you can click.** Each `[n]` maps to a filename and page, and clicking it opens the PDF at that page. If the model cites a source that doesn't exist, the marker is removed.
 - **Honest when it doesn't know.** A question the documents don't cover gets "I couldn't find that in the uploaded documents." instead of a guess.
 - **Duplicate detection.** Re-uploading the same file is detected by its SHA-256 hash, so the file isn't indexed twice.
@@ -33,7 +33,7 @@ Open http://localhost:8000 and try "How many days of paid time off do employees 
 
 The first run without Docker downloads the embedding model once (about 90 MB). The Docker image already contains it.
 
-Run the tests with `pytest`. There are 32 tests, and they need no API key, no model download and no network access.
+Run the tests with `pytest`. There are 33 tests, and they need no API key, no model download and no network access.
 
 ## API
 

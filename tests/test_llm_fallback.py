@@ -45,7 +45,7 @@ def test_groq_client_sends_sources_and_uses_right_model(groq, monkeypatch):
 
     monkeypatch.setattr(groq.client.chat.completions, "create", fake_create)
     assert groq.answer("PTO?", HITS) == "Employees get 25 days [1]."
-    assert captured["model"] == "llama-3.3-70b-versatile"
+    assert captured["model"] == "openai/gpt-oss-120b"
     user_msg = captured["messages"][1]["content"]
     assert "[1] (handbook.pdf, page 2)" in user_msg
     assert str(groq.client.base_url).startswith("https://api.groq.com/openai/v1")
@@ -91,3 +91,9 @@ def test_hallucinated_citation_numbers_are_dropped(client, seeded, monkeypatch):
     assert body["mode"] == "groq"
     assert "[9]" not in body["answer"]
     assert [c["n"] for c in body["citations"]] == [1]
+
+
+def test_fullwidth_citation_markers_are_normalised():
+    text, cites = answer_mod._citations("Employees get 25 days【1】 and 10 sick days［2］.", HITS)
+    assert text == "Employees get 25 days[1] and 10 sick days[2]."
+    assert [c.n for c in cites] == [1, 2]
